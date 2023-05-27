@@ -1,13 +1,14 @@
 import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { Text, View, StyleSheet } from "react-native";
 import Colors from "../utilities/Colors";
 import PrimaryButtons from "../components/PrimaryButtons";
+import Title from "../components/Title";
+import Container from "../components/Container";
 const GameStart = ({ currentGuess, handleReduceOrAddGuessedNumber }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.titleTextContainer}>
-        <Text style={styles.titleText}>Opponent's Guess</Text>
-      </View>
+    <Container>
+      <Title>Opponent's Guess</Title>
       <View style={styles.titleGuessedTextContainer}>
         <Text style={styles.titleGuessedText}>{currentGuess}</Text>
       </View>
@@ -15,15 +16,15 @@ const GameStart = ({ currentGuess, handleReduceOrAddGuessedNumber }) => {
         <PrimaryButtons
           onPress={() => handleReduceOrAddGuessedNumber("Reduce")}
         >
-          -
+          <Ionicons name="md-remove" size={24} color="white" />
         </PrimaryButtons>
         <PrimaryButtons
           onPress={() => handleReduceOrAddGuessedNumber("Increase")}
         >
-          +
+          <Ionicons name="md-add" size={24} color="white" />
         </PrimaryButtons>
       </View>
-    </View>
+    </Container>
   );
 };
 

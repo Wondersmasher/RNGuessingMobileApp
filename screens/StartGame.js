@@ -8,6 +8,7 @@ const StartGame = ({
   resetNumber,
   confirmChoosenNumber,
 }) => {
+  console.log("yayyyyyyy");
   return (
     <View style={styles.container}>
       <View>
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 20,
     fontSize: 35,
-    fontWeight: "bold",
+    fontFamily: "open-sans-bold",
   },
   buttonsContainer: {
     flexDirection: "row",

@@ -2,9 +2,9 @@ import React from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import Colors from "../utilities/Colors";
 
-const PrimaryButtons = ({ children, onPress }) => {
+const PrimaryButtons = ({ children, onPress, style }) => {
   return (
-    <View style={styles.buttonContainer}>
+    <View style={[styles.buttonContainer, style]}>
       <Pressable
         onPress={onPress}
         android_ripple={{ color: Colors.primary2 }}
