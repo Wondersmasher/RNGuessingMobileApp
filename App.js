@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import GameStart from "./screens/GameStart";
 import { LinearGradient } from "expo-linear-gradient";
 import GameOver from "./screens/GameOver";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
 
@@ -24,13 +26,22 @@ export default function App() {
   const [screenState, setScreenState] = useState("");
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [numberOfGuesses, setNumberOfGuesses] = useState(0);
   const choosenNumber = parseInt(enteredNumber);
 
+  const [fontsLoaded] = useFonts({
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+    "open-sans-regular": require("./assets/fonts/OpenSans-Regular.ttf"),
+  });
+  useEffect(() => {
+    setNumberOfGuesses(1);
+  }, []);
   useEffect(() => {
     if (choosenNumber === currentGuess) {
       setIsGameOver(true);
     }
   }, [choosenNumber, currentGuess]);
+
   const handleEnteredNumberChange = (enteredText) => {
     setEnteredNumber(enteredText);
   };
@@ -45,11 +56,6 @@ export default function App() {
     setScreenState("GameStartPage");
   };
   const handleReduceOrAddGuessedNumber = (pressedCase) => {
-    if (pressedCase === "Reduce") {
-      max = currentGuess;
-    } else {
-      min = currentGuess + 1;
-    }
     if (
       (pressedCase === "Reduce" && currentGuess < choosenNumber) ||
       (pressedCase === "Increase" && currentGuess > choosenNumber)
@@ -60,17 +66,29 @@ export default function App() {
       );
       return;
     }
-    console.log(min, max);
-    console.log(screenState);
+    if (pressedCase === "Reduce") {
+      max = currentGuess;
+    } else {
+      min = currentGuess + 1;
+    }
+    // console.log(min, max);
+    // console.log(screenState);
     const guessNewRandomNumber = generateRandomBetween(min, max, currentGuess);
     setCurrentGuess(guessNewRandomNumber);
+    setNumberOfGuesses((prev) => prev + 1);
   };
 
   const resetNumber = () => {
     setEnteredNumber("");
   };
 
-  let screen = (
+  const restartGame = () => {
+    setEnteredNumber("");
+    setIsGameOver(false);
+    setNumberOfGuesses(0);
+  };
+
+  let screen = fontsLoaded && !isGameOver && (
     <StartGame
       enteredNumber={enteredNumber}
       handleEnteredNumberChange={handleEnteredNumberChange}
@@ -88,7 +106,13 @@ export default function App() {
     );
   }
   if (isGameOver) {
-    screen = <GameOver />;
+    screen = (
+      <GameOver
+        enteredNumber={enteredNumber}
+        numberOfGuesses={numberOfGuesses}
+        restartGame={restartGame}
+      />
+    );
   }
 
   return (
