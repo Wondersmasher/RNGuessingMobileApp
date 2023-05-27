@@ -23,7 +23,7 @@ export default function App() {
   const initialGuess = generateRandomBetween(min, max, +enteredNumber);
 
   const [enteredNumber, setEnteredNumber] = useState("");
-  const [screenState, setScreenState] = useState("");
+  const [screenState, setScreenState] = useState("NewGame");
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [isGameOver, setIsGameOver] = useState(false);
   const [numberOfGuesses, setNumberOfGuesses] = useState(0);
@@ -71,7 +71,7 @@ export default function App() {
     } else {
       min = currentGuess + 1;
     }
-    // console.log(min, max);
+    console.log(min, max);
     // console.log(screenState);
     const guessNewRandomNumber = generateRandomBetween(min, max, currentGuess);
     setCurrentGuess(guessNewRandomNumber);
@@ -83,19 +83,27 @@ export default function App() {
   };
 
   const restartGame = () => {
+    const newGuess = generateRandomBetween(1, 100, 0);
     setEnteredNumber("");
     setIsGameOver(false);
     setNumberOfGuesses(0);
+    setCurrentGuess(newGuess);
+    setScreenState("NewGame");
+    min = 1;
+    max = 100;
   };
 
-  let screen = fontsLoaded && !isGameOver && (
-    <StartGame
-      enteredNumber={enteredNumber}
-      handleEnteredNumberChange={handleEnteredNumberChange}
-      resetNumber={resetNumber}
-      confirmChoosenNumber={confirmChoosenNumber}
-    />
-  );
+  let screen;
+  if (screenState === "NewGame") {
+    screen = fontsLoaded && (
+      <StartGame
+        enteredNumber={enteredNumber}
+        handleEnteredNumberChange={handleEnteredNumberChange}
+        resetNumber={resetNumber}
+        confirmChoosenNumber={confirmChoosenNumber}
+      />
+    );
+  }
 
   if (screenState === "GameStartPage") {
     screen = (

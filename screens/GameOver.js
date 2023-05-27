@@ -22,7 +22,7 @@ const GameOver = ({ enteredNumber, numberOfGuesses, restartGame }) => {
           the number <Text style={styles.highlight}>{enteredNumber}</Text>
         </Text>
       </View>
-      <PrimaryButtons onPress={restartGame} style={{ flex: 0 }}>
+      <PrimaryButtons onPress={restartGame} style={styles.button}>
         New Game
       </PrimaryButtons>
     </Container>
@@ -51,4 +51,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 50,
   },
+  button: { flex: 0, marginTop: 40 },
 });
