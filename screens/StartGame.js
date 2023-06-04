@@ -8,7 +8,6 @@ const StartGame = ({
   resetNumber,
   confirmChoosenNumber,
 }) => {
-  console.log("yayyyyyyy");
   return (
     <View style={styles.container}>
       <View>

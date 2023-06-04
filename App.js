@@ -7,7 +7,6 @@ import GameStart from "./screens/GameStart";
 import { LinearGradient } from "expo-linear-gradient";
 import GameOver from "./screens/GameOver";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
 
@@ -28,6 +27,7 @@ export default function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [numberOfGuesses, setNumberOfGuesses] = useState(0);
   const choosenNumber = parseInt(enteredNumber);
+  const [guessesArray, setGuessesArray] = useState([initialGuess]);
 
   const [fontsLoaded] = useFonts({
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
@@ -48,8 +48,11 @@ export default function App() {
 
   const confirmChoosenNumber = () => {
     if (isNaN(choosenNumber) || choosenNumber <= 0 || choosenNumber > 99) {
-      ("You have to input a number between 1 and 99. Try putting another number");
-      Alert.alert("Invalid Input");
+      // ("You have to input a number between 1 and 99. Try putting another number");
+      Alert.alert(
+        "Invalid Input",
+        "You have to input a number between 1 and 99. Try putting another number"
+      );
       setEnteredNumber("");
       return;
     }
@@ -62,7 +65,7 @@ export default function App() {
     ) {
       Alert.alert(
         "You need not to lie",
-        "You can just be honest once and give the correct hint"
+        "Can you just be honest for once and give the correct hint"
       );
       return;
     }
@@ -71,11 +74,12 @@ export default function App() {
     } else {
       min = currentGuess + 1;
     }
-    console.log(min, max);
+    // console.log(min, max);
     // console.log(screenState);
     const guessNewRandomNumber = generateRandomBetween(min, max, currentGuess);
     setCurrentGuess(guessNewRandomNumber);
     setNumberOfGuesses((prev) => prev + 1);
+    setGuessesArray((prev) => [guessNewRandomNumber, ...prev]);
   };
 
   const resetNumber = () => {
@@ -88,6 +92,7 @@ export default function App() {
     setIsGameOver(false);
     setNumberOfGuesses(0);
     setCurrentGuess(newGuess);
+    setGuessesArray([newGuess]);
     setScreenState("NewGame");
     min = 1;
     max = 100;
@@ -110,6 +115,7 @@ export default function App() {
       <GameStart
         currentGuess={currentGuess}
         handleReduceOrAddGuessedNumber={handleReduceOrAddGuessedNumber}
+        guessesArray={guessesArray}
       />
     );
   }
@@ -128,6 +134,7 @@ export default function App() {
       style={styles.container}
       colors={[Colors.primary3, Colors.accent1]}
     >
+      <StatusBar style="light" />
       <ImageBackground
         source={require("./assets/images/background.png")}
         resizeMode="cover"

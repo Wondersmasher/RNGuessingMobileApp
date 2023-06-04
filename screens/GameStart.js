@@ -1,11 +1,16 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, FlatList } from "react-native";
 import Colors from "../utilities/Colors";
 import PrimaryButtons from "../components/PrimaryButtons";
 import Title from "../components/Title";
 import Container from "../components/Container";
-const GameStart = ({ currentGuess, handleReduceOrAddGuessedNumber }) => {
+const GameStart = ({
+  currentGuess,
+  handleReduceOrAddGuessedNumber,
+  guessesArray,
+}) => {
+  const guessesArrayLength = guessesArray.length;
   return (
     <Container>
       <Title>Opponent's Guess</Title>
@@ -23,6 +28,18 @@ const GameStart = ({ currentGuess, handleReduceOrAddGuessedNumber }) => {
         >
           <Ionicons name="md-add" size={24} color="white" />
         </PrimaryButtons>
+      </View>
+      <View style={styles.flatListContainer}>
+        <FlatList
+          data={guessesArray}
+          renderItem={(itemData) => (
+            <View style={styles.flatListViewContainer}>
+              <Text># {guessesArrayLength - itemData.index}</Text>
+              <Text style={styles.flatListText}>{itemData.item}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item}
+        />
       </View>
     </Container>
   );
@@ -66,4 +83,18 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
   },
+  flatListContainer: {
+    flex: 1,
+    gap: 10,
+    paddingVertical: 20,
+  },
+  flatListViewContainer: {
+    padding: 10,
+    backgroundColor: Colors.accent1,
+    borderRadius: 5,
+    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  flatListText: { color: Colors.primary4 },
 });
